@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from Agents.agent1 import process_document_and_upload_to_s3
 from Agents.agent2 import extract_intent_and_entities, format_response_from_data
-from Agents.agent3 import generate_cypher_and_query_neo4j
+from Agents.agent3 import extract_response
  
 st.set_page_config(page_title="DociQ - Smart Graph Chatbot", layout="centered")
 logo_url = "https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png"
@@ -49,7 +49,7 @@ if st.button("🔍 Get Answer"):
     if user_question:
         with st.spinner("🧠 Understanding your question..."):
             intent_entities = extract_intent_and_entities(user_question)
-            cypher_query, results = generate_cypher_and_query_neo4j(intent_entities,user_question)
+            cypher_query, results = extract_response(intent_entities,user_question)
             final_response = format_response_from_data(intent_entities, results)
             st.markdown("#### 🧾 Cypher Query Used:")
             st.code(cypher_query, language="cypher")
